@@ -1,4 +1,5 @@
 //import java.awt.Color;
+import java.awt.Color;
 import java.awt.GridLayout;
 
 import javax.swing.BorderFactory;
@@ -17,19 +18,38 @@ public class CovidTracker extends JFrame {
 	int number = 1;
 	
 	public CovidTracker() {
-		
+		int xnum = 0;
+		int ynum = 1;
+		String xCoord;
+		String yCoord;
 		final JFrame f = new JFrame("Covid Tester");
-        JPanel panel = new JPanel(new GridLayout(rowCol, rowCol,1,1)); //num of rows, cols, spacing pixels 
-        JLabel[][] grid= new JLabel[rowCol][rowCol];
-        
-        for(int i =0;i<rowCol;i++) {
-        	for(int j=0;j<rowCol;j++) {
+        JPanel panel = new JPanel(new GridLayout(rowCol+1, rowCol+1,1,1)); //num of rows, cols, spacing pixels 
+        JLabel[][] grid = new JLabel[rowCol+1][rowCol+1];
+  
+        for(int i = 0; i < rowCol+1; i++) {
+        	for(int j = 0; j < rowCol+1; j++) {
         		
-        		 grid[i][j] = new JLabel("-", JLabel.CENTER);
+        		if(i == 0) {
+        			xCoord = Integer.toString(xnum);
+        			grid[i][j] = new JLabel(xCoord, JLabel.CENTER);
+        			xnum++;
+        			grid[i][j].setBorder(BorderFactory.createLineBorder(Color.black,1));
+                    panel.add(grid[i][j]);
+        		}
+        		else if(j == 0) {
+        			yCoord = Integer.toString(ynum);
+        			grid[i][j] = new JLabel(yCoord, JLabel.CENTER);
+        			ynum++;
+        			grid[i][j].setBorder(BorderFactory.createLineBorder(Color.black));
+                    panel.add(grid[i][j]);
+        		}
+        		else if(i!=0 && j!=0) {
+        			grid[i][j] = new JLabel("-", JLabel.CENTER);
+        			grid[i][j].setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
+                    panel.add(grid[i][j]);
+        		}
 //        		 if(i == 15 && j ==15)
 //        			 grid[i][j].setBackground(Color.RED);
-        		 grid[i][j].setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-                 panel.add(grid[i][j]);
         	}
         }
 

@@ -47,13 +47,10 @@ public class SliderWindow
             {
             	Slider frame = new Slider();
                 JButton button = new JButton();
-                JPanel buttonPane = new JPanel();
                 
-                buttonPane.setLayout(new BoxLayout(buttonPane, BoxLayout.LINE_AXIS));
                 button.setVisible(true);
                 button.setText("Set Parameters");
                 button.setBackground(Color.RED);
-                buttonPane.add(button);
                 frame.add(button, BorderLayout.SOUTH);
              
                 button.addActionListener(new ActionListener() {
