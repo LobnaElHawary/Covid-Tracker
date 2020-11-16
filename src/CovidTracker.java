@@ -7,12 +7,18 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
 
-public class CovidTracker {
+public class CovidTracker extends JFrame {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	//vars
 	final static int rowCol = 30;
+	int number = 1;
 	
-	public static void main(String[] args) {
+	public CovidTracker() {
 		
-        final JFrame f = new JFrame("Covid Tester");
+		final JFrame f = new JFrame("Covid Tester");
         JPanel panel = new JPanel(new GridLayout(rowCol, rowCol,1,1)); //num of rows, cols, spacing pixels 
         JLabel[][] grid= new JLabel[rowCol][rowCol];
         
@@ -32,4 +38,8 @@ public class CovidTracker {
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.setVisible(true);
     }
+	
+	public static void main(String[] args) {
+		SliderWindow sw = new SliderWindow();
+	}
 }
