@@ -1,5 +1,7 @@
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -7,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -43,39 +46,41 @@ public class SliderWindow
             public void run()
             {
             	Slider frame = new Slider();
-     
-//                JButton b1 = new JButton();
-//                frame.setLayout(new BorderLayout());
-//                frame.setSize(350,450); 
-//                b1.setVisible(true);
-//                b1.setText("Set");
-//                frame.setLayout(new FlowLayout());
-//                frame.add(b1);
-//                b1.addActionListener(new ActionListener() {
-//                    public void actionPerformed(ActionEvent e)
-//                    {
-//						if (xCoordinate == 0)
-//							xCoordinate = 3;
-//						else if (xCoordinate  == 1)
-//							xCoordinate = 5;
-//						else 
-//							xCoordinate = 10;
-//
-//						if (yCoordinate == 0)
-//							yCoordinate = 3000;
-//						else if (yCoordinate == 1)
-//							yCoordinate = 1500;
-//						else
-//							yCoordinate = 500;
-//							
-//						frame.dispose();
-//						
-//						EventQueue.invokeLater(() -> {
-//						CovidTracker cd = new CovidTracker();
-//						cd.setVisible(true);
-//						});
-//                    }
-//                });
+                JButton b1 = new JButton();
+                JPanel buttonPane = new JPanel();
+                buttonPane.setLayout(new BoxLayout(buttonPane, BoxLayout.LINE_AXIS));
+               
+                b1.setText("Set Parameters");
+                buttonPane.add(b1);
+                b1.setVisible(true);
+
+                frame.add(b1, BorderLayout.SOUTH);
+             
+                b1.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e)
+                    {
+						if (xCoordinate == 0)
+							xCoordinate = 3;
+						else if (xCoordinate  == 1)
+							xCoordinate = 5;
+						else 
+							xCoordinate = 10;
+
+						if (yCoordinate == 0)
+							yCoordinate = 3000;
+						else if (yCoordinate == 1)
+							yCoordinate = 1500;
+						else
+							yCoordinate = 500;
+							
+						frame.dispose();
+						
+						EventQueue.invokeLater(() -> {
+						CovidTracker cd = new CovidTracker();
+						cd.setVisible(true);
+						});
+                    }
+                });
             	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.setVisible(true);
                
