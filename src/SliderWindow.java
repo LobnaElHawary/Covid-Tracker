@@ -46,17 +46,17 @@ public class SliderWindow
             public void run()
             {
             	Slider frame = new Slider();
-                JButton b1 = new JButton();
+                JButton button = new JButton();
                 JPanel buttonPane = new JPanel();
+                
                 buttonPane.setLayout(new BoxLayout(buttonPane, BoxLayout.LINE_AXIS));
-               
-                b1.setText("Set Parameters");
-                buttonPane.add(b1);
-                b1.setVisible(true);
-
-                frame.add(b1, BorderLayout.SOUTH);
+                button.setVisible(true);
+                button.setText("Set Parameters");
+                button.setBackground(Color.RED);
+                buttonPane.add(button);
+                frame.add(button, BorderLayout.SOUTH);
              
-                b1.addActionListener(new ActionListener() {
+                button.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e)
                     {
 						if (xCoordinate == 0)
@@ -81,6 +81,7 @@ public class SliderWindow
 						});
                     }
                 });
+                
             	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.setVisible(true);
                
