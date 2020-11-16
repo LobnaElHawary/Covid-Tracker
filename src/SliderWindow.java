@@ -1,15 +1,12 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Dictionary;
 import java.util.Hashtable;
-
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -71,7 +68,6 @@ public class SliderWindow
 							yCoordinate = 500;
 							
 						frame.dispose();
-						
 						EventQueue.invokeLater(() -> {
 						CovidTracker cd = new CovidTracker();
 						cd.setVisible(true);
