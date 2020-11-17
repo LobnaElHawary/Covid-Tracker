@@ -13,39 +13,32 @@ public class CovidTracker extends JPanel{
 	final static int rowCol = 30;
 	int number = 1;
 	
-	public CovidTracker(int coidPercent) {
+	public CovidTracker(int xCoord, int yCoord,  int nodesNum, int covidPercent, int walkLenght, int waitTime, int moveDistance, 
+			int safeDistance, int infectionTime) {
+		
+		InitializeUI(xCoord,yCoord); //create xCoord x yCoord empty board
+		CreateThreads(nodesNum);
+    }
 
+	public void InitializeUI(int xCoord, int yCoord) {
+		
 		int xnum = 0;
 		int ynum = 1;
-		String xCoord;
-		String yCoord;
 	
-        setLayout(new GridLayout(rowCol+1, rowCol+1));
-        JLabel[][] grid = new JLabel[rowCol+1][rowCol+1];
-//        //JFrame f = new JFrame();
-//        
-//        //f.setTitle("Covid Tracker");
-//        
-////        int n = 8; // Number of threads 
-////        for (int i=0; i<n; i++) 
-////        { 
-////            Threads object = new Threads(); 
-////            object.start(); 
-////        } 
-//        
-        for(int i = 0; i < rowCol+1; i++) {
-        	for(int j = 0; j < rowCol+1; j++) {
+        setLayout(new GridLayout(xCoord+1 /*num rows*/, yCoord+1/*num cols*/)); 
+        JLabel[][] grid = new JLabel[xCoord+1][yCoord+1];
+        
+        for(int i = 0; i < xCoord+1; i++) {
+        	for(int j = 0; j < yCoord+1; j++) {
         		
         		if(i == 0) {
-        			xCoord = Integer.toString(xnum);
-        			grid[i][j] = new JLabel(xCoord, JLabel.CENTER);
+        			grid[i][j] = new JLabel(Integer.toString(xnum), JLabel.CENTER);
         			xnum++;
         			grid[i][j].setBorder(BorderFactory.createLineBorder(Color.black,1));
                     add(grid[i][j]);
         		}
         		else if(j == 0) {
-        			yCoord = Integer.toString(ynum);
-        			grid[i][j] = new JLabel(yCoord, JLabel.CENTER);
+        			grid[i][j] = new JLabel(Integer.toString(ynum), JLabel.CENTER);
         			ynum++;
         			grid[i][j].setBorder(BorderFactory.createLineBorder(Color.black));
                     add(grid[i][j]);
@@ -59,12 +52,9 @@ public class CovidTracker extends JPanel{
 ////        			 grid[i][j].setBackground(Color.RED);
         	}
         }
-
-        //f.setContentPane(panel);
-        //setSize(300, 300);
-        //f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
         setVisible(true);
-    }
+	}
 	
 	class Threads extends Thread 
 	{ 
@@ -74,7 +64,8 @@ public class CovidTracker extends JPanel{
 	        { 
 	            // Displaying the thread that is running 
 	            System.out.println ("Thread " + 
-	                  Thread.currentThread().getId() + 
+	                  Thread.currentThread().getId() + " with name " 
+	            	+ Thread.currentThread().getName()+
 	                  " is running"); 
 	  
 	        } 
@@ -84,6 +75,16 @@ public class CovidTracker extends JPanel{
 	            System.out.println ("Exception is caught"); 
 	        } 
 	    } 
-	} 
+	}
+	
+	public void CreateThreads(int nodesNum) {
+		//create nodesNum threads
+        for (int i = 0; i < nodesNum; i++) 
+        { 
+            Threads object = new Threads(); 
+            object.setName( Integer.toString(i)); //give each thread a unique name (nums from 0-n)
+            object.start(); 
+        } 
+	}
 
 }

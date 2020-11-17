@@ -1,31 +1,18 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Dictionary;
-import java.util.Hashtable;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
-/* Input Paremeters:
-- The X and Y coordinate of the space.
-- The number of nodes in the space.
-- The percentage of nodes that are COVID positive.
-- The total length of the walk.
-- The range of time to randomly wait (min milliseconds to max milliseconds)
-- The distance to move each time.
-- The safe social distance.
-- The amount of time to remain in the unsafe social distance to be infected.
-*/
+
 public class SliderWindow
 {
-	JSlider covidPercentSlider = new JSlider();
 	public int xCoordinate;
 	public int yCoordinate;
 	public int numNodes;
@@ -53,6 +40,24 @@ public class SliderWindow
                 button.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e)
                     {
+                    	//set initial values in case user didn't change slider
+                    	if(xCoordinate == 0)
+                    		xCoordinate = 30;
+                    	if(yCoordinate == 0)
+                    		yCoordinate = 30;
+                    	if(numNodes == 0)
+                    		numNodes = 30;
+                    	if(covidPercent == 0)
+                    		covidPercent = 10;
+                    	if(walkLength == 0)
+                    		walkLength = 60;
+                    	if(moveDistance == 0)
+                    		moveDistance = 1;
+                    	if(safeDistance == 0)
+                    		safeDistance = 1;
+                    	if(infectionTime == 0)
+                    		infectionTime = 2;
+                    	
 						frame.dispose();
 						EventQueue.invokeLater(() -> {
 						Main cd = new Main();
@@ -83,39 +88,29 @@ class Slider extends JFrame
          
 
       //---------ADD X COORDINATE SLIDER-----------
-      JSlider xCoordSlider = new JSlider(0, 2, 0);
+      
+      JSlider xCoordSlider = new JSlider(30,50,30);
       xCoordSlider.setPaintTicks(true);
-      xCoordSlider.setSnapToTicks(true);
       xCoordSlider.setPaintLabels(true);
-      xCoordSlider.setMinorTickSpacing(1);
-      addSlider(xCoordSlider, "X coordinate");
-      
-      Dictionary<Integer, Component> xCoordHash = new Hashtable<Integer, Component>();
-      xCoordHash.put(0, new JLabel("30"));
-      xCoordHash.put(1, new JLabel("40"));
-      xCoordHash.put(2, new JLabel("50"));
-      
-      xCoordSlider.setLabelTable(xCoordHash);
+      xCoordSlider.setSnapToTicks(true);
+      xCoordSlider.setMajorTickSpacing(10);
+      xCoordSlider.setMinorTickSpacing(10);
+      addSlider(xCoordSlider, "X Coordinate size");
       
       //xCoord Listener
       xCoordSlider.addChangeListener((ChangeEvent event) -> {
-    	  yCoordinate = xCoordSlider.getValue();
+    	  xCoordinate = xCoordSlider.getValue();
       });
       
     //---------ADD Y COORDINATE SLIDER-----------
-      JSlider yCoordSlider = new JSlider(0, 2, 0);
+      
+      JSlider yCoordSlider = new JSlider(30,50,30);
       yCoordSlider.setPaintTicks(true);
-      yCoordSlider.setSnapToTicks(true);
       yCoordSlider.setPaintLabels(true);
-      yCoordSlider.setMinorTickSpacing(1);
-      addSlider(yCoordSlider, "Y coordinate");
-      
-      Dictionary<Integer, Component> yCoordHash = new Hashtable<Integer, Component>();
-      yCoordHash.put(0, new JLabel("30"));
-      yCoordHash.put(1, new JLabel("40"));
-      yCoordHash.put(2, new JLabel("50"));
-      
-      yCoordSlider.setLabelTable(yCoordHash);
+      yCoordSlider.setSnapToTicks(true);
+      yCoordSlider.setMajorTickSpacing(10);
+      yCoordSlider.setMinorTickSpacing(10);
+      addSlider(yCoordSlider, "Y Coordinate size");
       
       //yCoord Listener
       yCoordSlider.addChangeListener((ChangeEvent event) -> {
@@ -123,20 +118,14 @@ class Slider extends JFrame
       });
       
       //---------ADD NUM NODES SLIDER-----------
-      JSlider numNodesSlider = new JSlider(0, 2, 0);
-      numNodesSlider.setPaintLabels(true);
-      numNodesSlider.setPaintTicks(true);
-      numNodesSlider.setSnapToTicks(true);
-      numNodesSlider.setMajorTickSpacing(1);
-      numNodesSlider.setMinorTickSpacing(1);
-      addSlider(numNodesSlider, "Number of Nodes");
       
-      Dictionary<Integer, Component> numNodesHash = new Hashtable<Integer, Component>();
-      numNodesHash.put(0, new JLabel("30"));
-      numNodesHash.put(1, new JLabel("40"));
-      numNodesHash.put(2, new JLabel("50"));
-
-      numNodesSlider.setLabelTable(numNodesHash);
+      JSlider numNodesSlider = new JSlider(30,50,30);
+      numNodesSlider.setPaintTicks(true);
+      numNodesSlider.setPaintLabels(true);
+      numNodesSlider.setSnapToTicks(true);
+      numNodesSlider.setMajorTickSpacing(10);
+      numNodesSlider.setMinorTickSpacing(10);
+      addSlider(numNodesSlider, "Number of Nodes");
       
      
      //num node Listener
@@ -145,8 +134,8 @@ class Slider extends JFrame
       });
       
       //---------ADD COVID PERCENT SLIDER-----------
-     
-     // JSlider covidPercentSlider = new JSlider();
+
+  	  JSlider covidPercentSlider = new JSlider(); //values from 10 - 100
       covidPercentSlider.setPaintTicks(true);
       covidPercentSlider.setPaintLabels(true);
       covidPercentSlider.setSnapToTicks(true);
@@ -158,11 +147,10 @@ class Slider extends JFrame
       //covid percent Listener
       covidPercentSlider.addChangeListener((ChangeEvent event) -> {
     	  covidPercent = covidPercentSlider.getValue();
-    	  //System.out.println(covidPercent);  
       });
-     // System.out.println(covidPercent);  
       
       //---------ADD WALK LENGTH SLIDER-----------
+      
       JSlider walkLengthSlider = new JSlider(60,100);
       walkLengthSlider.setPaintTicks(true);
       walkLengthSlider.setPaintLabels(true);
