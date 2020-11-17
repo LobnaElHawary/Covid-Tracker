@@ -14,24 +14,24 @@ public class CovidTracker extends JPanel{
 	int number = 1;
 	
 	public CovidTracker(int coidPercent) {
-		
+
 		int xnum = 0;
 		int ynum = 1;
 		String xCoord;
 		String yCoord;
-		
-		new GridLayout(rowCol+1, rowCol+1); //num of rows, cols, spacing pixels 
+	
+        setLayout(new GridLayout(rowCol+1, rowCol+1));
         JLabel[][] grid = new JLabel[rowCol+1][rowCol+1];
-        //JFrame f = new JFrame();
-        
-        //f.setTitle("Covid Tracker");
-        
-//        int n = 8; // Number of threads 
-//        for (int i=0; i<n; i++) 
-//        { 
-//            Threads object = new Threads(); 
-//            object.start(); 
-//        } 
+//        //JFrame f = new JFrame();
+//        
+//        //f.setTitle("Covid Tracker");
+//        
+////        int n = 8; // Number of threads 
+////        for (int i=0; i<n; i++) 
+////        { 
+////            Threads object = new Threads(); 
+////            object.start(); 
+////        } 
 //        
         for(int i = 0; i < rowCol+1; i++) {
         	for(int j = 0; j < rowCol+1; j++) {
@@ -55,13 +55,13 @@ public class CovidTracker extends JPanel{
         			grid[i][j].setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
                     add(grid[i][j]);
         		}
-//        		 if(i == 15 && j ==15)
-//        			 grid[i][j].setBackground(Color.RED);
+////        		 if(i == 15 && j ==15)
+////        			 grid[i][j].setBackground(Color.RED);
         	}
         }
 
         //f.setContentPane(panel);
-        setSize(300, 300);
+        //setSize(300, 300);
         //f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
     }
