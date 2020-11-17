@@ -25,11 +25,11 @@ import javax.swing.event.ChangeEvent;
 */
 public class SliderWindow
 {
-	public boolean BoardRun;
-	public int xCoordinate = 0;
-	public int yCoordinate = 0;
-	public int numNodes = 0;
-	public int covidPercent = 0;
+	JSlider covidPercentSlider = new JSlider();
+	public int xCoordinate;
+	public int yCoordinate;
+	public int numNodes;
+	public int covidPercent;
 	public int walkLength = 0;
 	public int waitTime = 0; 
 	public int moveDistance = 0; 
@@ -53,23 +53,9 @@ public class SliderWindow
                 button.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e)
                     {
-						if (xCoordinate == 0)
-							xCoordinate = 3;
-						else if (xCoordinate  == 1)
-							xCoordinate = 5;
-						else 
-							xCoordinate = 10;
-
-						if (yCoordinate == 0)
-							yCoordinate = 3000;
-						else if (yCoordinate == 1)
-							yCoordinate = 1500;
-						else
-							yCoordinate = 500;
-							
 						frame.dispose();
 						EventQueue.invokeLater(() -> {
-						CovidTracker cd = new CovidTracker();
+						Main cd = new Main();
 						cd.setVisible(true);
 						});
                     }
@@ -146,9 +132,9 @@ class Slider extends JFrame
       addSlider(numNodesSlider, "Number of Nodes");
       
       Dictionary<Integer, Component> numNodesHash = new Hashtable<Integer, Component>();
-      numNodesHash.put(0, new JLabel("3"));
-      numNodesHash.put(1, new JLabel("5"));
-      numNodesHash.put(2, new JLabel("10"));
+      numNodesHash.put(0, new JLabel("30"));
+      numNodesHash.put(1, new JLabel("40"));
+      numNodesHash.put(2, new JLabel("50"));
 
       numNodesSlider.setLabelTable(numNodesHash);
       
@@ -159,41 +145,31 @@ class Slider extends JFrame
       });
       
       //---------ADD COVID PERCENT SLIDER-----------
-      JSlider covidPercentSlider = new JSlider(0, 2, 0);
-      covidPercentSlider.setPaintLabels(true);
+     
+     // JSlider covidPercentSlider = new JSlider();
       covidPercentSlider.setPaintTicks(true);
+      covidPercentSlider.setPaintLabels(true);
       covidPercentSlider.setSnapToTicks(true);
-      covidPercentSlider.setMajorTickSpacing(1);
-      covidPercentSlider.setMinorTickSpacing(1);
+      covidPercentSlider.setMajorTickSpacing(20);
+      covidPercentSlider.setMinorTickSpacing(10);
+      covidPercentSlider.setMinimum(10);
       addSlider(covidPercentSlider, "Covid Percentage");
-      
-      Dictionary<Integer, Component> covidPercentHash = new Hashtable<Integer, Component>();
-      covidPercentHash.put(0, new JLabel("3"));
-      covidPercentHash.put(1, new JLabel("5"));
-      covidPercentHash.put(2, new JLabel("10"));
-
-      covidPercentSlider.setLabelTable(covidPercentHash);
       
       //covid percent Listener
       covidPercentSlider.addChangeListener((ChangeEvent event) -> {
     	  covidPercent = covidPercentSlider.getValue();
+    	  //System.out.println(covidPercent);  
       });
+     // System.out.println(covidPercent);  
       
       //---------ADD WALK LENGTH SLIDER-----------
-      JSlider walkLengthSlider = new JSlider(0, 2, 0);
-      walkLengthSlider.setPaintLabels(true);
+      JSlider walkLengthSlider = new JSlider(60,100);
       walkLengthSlider.setPaintTicks(true);
+      walkLengthSlider.setPaintLabels(true);
       walkLengthSlider.setSnapToTicks(true);
-      walkLengthSlider.setMajorTickSpacing(1);
+      walkLengthSlider.setMajorTickSpacing(10);
       walkLengthSlider.setMinorTickSpacing(1);
-      addSlider(walkLengthSlider, "Walk length");
-      
-      Dictionary<Integer, Component> walkLengthHash = new Hashtable<Integer, Component>();
-      walkLengthHash.put(0, new JLabel("3"));
-      walkLengthHash.put(1, new JLabel("5"));
-      walkLengthHash.put(2, new JLabel("10"));
-
-      walkLengthSlider.setLabelTable(walkLengthHash);
+      addSlider(walkLengthSlider, "Walk Length");
       
      
      //walk length Listener
@@ -202,20 +178,13 @@ class Slider extends JFrame
       });
       
       //---------ADD WAIT TIME SLIDER-----------
-      JSlider waitTimeSlider = new JSlider(0, 2, 0);
+      JSlider waitTimeSlider = new JSlider(500,1000);
       waitTimeSlider.setPaintLabels(true);
       waitTimeSlider.setPaintTicks(true);
       waitTimeSlider.setSnapToTicks(true);
-      waitTimeSlider.setMajorTickSpacing(1);
-      waitTimeSlider.setMinorTickSpacing(1);
-      addSlider(waitTimeSlider, "Wait time");
-      
-      Dictionary<Integer, Component> waitTimeHash = new Hashtable<Integer, Component>();
-      waitTimeHash.put(0, new JLabel("3"));
-      waitTimeHash.put(1, new JLabel("5"));
-      waitTimeHash.put(2, new JLabel("10"));
-
-      waitTimeSlider.setLabelTable(waitTimeHash);
+      waitTimeSlider.setMajorTickSpacing(100);
+      waitTimeSlider.setMinorTickSpacing(100);
+      addSlider(waitTimeSlider, "Wait time (ms)");
       
      
      //walk length Listener
@@ -224,43 +193,27 @@ class Slider extends JFrame
       });
       
       //---------ADD MOVE DISTANCE SLIDER-----------
-      JSlider moveDistanceSlider = new JSlider(0, 2, 0);
+      JSlider moveDistanceSlider = new JSlider(1, 3);
       moveDistanceSlider.setPaintLabels(true);
       moveDistanceSlider.setPaintTicks(true);
       moveDistanceSlider.setSnapToTicks(true);
       moveDistanceSlider.setMajorTickSpacing(1);
       moveDistanceSlider.setMinorTickSpacing(1);
       addSlider(moveDistanceSlider, "Moving distance");
-      
-      Dictionary<Integer, Component> moveDistanceHash = new Hashtable<Integer, Component>();
-      moveDistanceHash.put(0, new JLabel("3"));
-      moveDistanceHash.put(1, new JLabel("5"));
-      moveDistanceHash.put(2, new JLabel("10"));
-
-      moveDistanceSlider.setLabelTable(moveDistanceHash);
-      
      
      //move distances Listener
       moveDistanceSlider.addChangeListener((ChangeEvent event) -> {
     	  moveDistance = moveDistanceSlider.getValue();
       });
       
-      //---------ADD MOVE DISTANCE SLIDER-----------
-      JSlider safeDistanceSlider = new JSlider(0, 2, 0);
+      //---------ADD SAFE DISTANCE SLIDER-----------
+      JSlider safeDistanceSlider = new JSlider(1, 3);
       safeDistanceSlider.setPaintLabels(true);
       safeDistanceSlider.setPaintTicks(true);
       safeDistanceSlider.setSnapToTicks(true);
       safeDistanceSlider.setMajorTickSpacing(1);
       safeDistanceSlider.setMinorTickSpacing(1);
       addSlider(safeDistanceSlider, "Safe Distance");
-      
-      Dictionary<Integer, Component> safeDistanceHash = new Hashtable<Integer, Component>();
-      safeDistanceHash.put(0, new JLabel("3"));
-      safeDistanceHash.put(1, new JLabel("5"));
-      safeDistanceHash.put(2, new JLabel("10"));
-
-      safeDistanceSlider.setLabelTable(safeDistanceHash);
-      
      
      //safe distances Listener
       safeDistanceSlider.addChangeListener((ChangeEvent event) -> {
@@ -268,22 +221,14 @@ class Slider extends JFrame
       });
       
       //---------ADD INFECTION TIME SLIDER-----------
-      JSlider infectionTimeSlider = new JSlider(0, 2, 0);
+      JSlider infectionTimeSlider = new JSlider(2, 4);
       infectionTimeSlider.setPaintLabels(true);
       infectionTimeSlider.setPaintTicks(true);
       infectionTimeSlider.setSnapToTicks(true);
       infectionTimeSlider.setMajorTickSpacing(1);
       infectionTimeSlider.setMinorTickSpacing(1);
-      addSlider(infectionTimeSlider, "Infection time");
+      addSlider(infectionTimeSlider, "Infection time (sec)");
       
-      Dictionary<Integer, Component> infectionTimeHash = new Hashtable<Integer, Component>();
-      infectionTimeHash.put(0, new JLabel("3"));
-      infectionTimeHash.put(1, new JLabel("5"));
-      infectionTimeHash.put(2, new JLabel("10"));
-
-      infectionTimeSlider.setLabelTable(infectionTimeHash);
-      
-     
      //safe distances Listener
       infectionTimeSlider.addChangeListener((ChangeEvent event) -> {
     	  infectionTime = infectionTimeSlider.getValue();
@@ -292,7 +237,6 @@ class Slider extends JFrame
       add(sliderPanel, BorderLayout.CENTER);
    
    }
-   
    public void addSlider(JSlider s, String description)
    {
 //      s.addChangeListener(listener);
@@ -308,4 +252,6 @@ class Slider extends JFrame
    private JPanel sliderPanel;
    public int value;
 }
+
+
 }
