@@ -12,14 +12,10 @@ public class Main extends JFrame{
     }
 
     private void UI() {
-        System.out.println (slide.covidPercent); 
-        System.out.println (slide.xCoordinate); 
-        System.out.println (slide.yCoordinate); 
-        //add(new CovidTracker(slide.covidPercent));
-
+    	
         setLayout(new BorderLayout());
         add(new CovidTracker(slide.xCoordinate,slide.yCoordinate,slide.numNodes,slide.covidPercent,slide.walkLength,
-        		slide.waitTime,slide.moveDistance,slide.safeDistance,slide.infectionTime));
+        		slide.minWaitTime,slide.maxWaitTime,slide.moveDistance,slide.safeDistance,slide.infectionTime));
 
     	
         setResizable(true);

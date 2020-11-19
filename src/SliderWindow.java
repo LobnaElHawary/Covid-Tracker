@@ -18,7 +18,8 @@ public class SliderWindow
 	public int numNodes;
 	public int covidPercent;
 	public int walkLength = 0;
-	public int waitTime = 0; 
+	public int minWaitTime = 0; 
+	public int maxWaitTime = 0; 
 	public int moveDistance = 0; 
 	public int safeDistance = 0; 
 	public int infectionTime = 0; 
@@ -49,6 +50,10 @@ public class SliderWindow
                     		numNodes = 30;
                     	if(covidPercent == 0)
                     		covidPercent = 10;
+                    	if(minWaitTime == 0)
+                    		minWaitTime = 500;
+                    	if(maxWaitTime == 0)
+                    		maxWaitTime = 500;
                     	if(walkLength == 0)
                     		walkLength = 60;
                     	if(moveDistance == 0)
@@ -135,13 +140,12 @@ class Slider extends JFrame
       
       //---------ADD COVID PERCENT SLIDER-----------
 
-  	  JSlider covidPercentSlider = new JSlider(); //values from 10 - 100
+  	  JSlider covidPercentSlider = new JSlider(10,100,10); //values from 10 - 100
       covidPercentSlider.setPaintTicks(true);
       covidPercentSlider.setPaintLabels(true);
       covidPercentSlider.setSnapToTicks(true);
       covidPercentSlider.setMajorTickSpacing(20);
       covidPercentSlider.setMinorTickSpacing(10);
-      covidPercentSlider.setMinimum(10);
       addSlider(covidPercentSlider, "Covid Percentage");
       
       //covid percent Listener
@@ -151,7 +155,7 @@ class Slider extends JFrame
       
       //---------ADD WALK LENGTH SLIDER-----------
       
-      JSlider walkLengthSlider = new JSlider(60,100);
+      JSlider walkLengthSlider = new JSlider(60,100,60);
       walkLengthSlider.setPaintTicks(true);
       walkLengthSlider.setPaintLabels(true);
       walkLengthSlider.setSnapToTicks(true);
@@ -165,23 +169,37 @@ class Slider extends JFrame
     	  walkLength = walkLengthSlider.getValue();
       });
       
-      //---------ADD WAIT TIME SLIDER-----------
-      JSlider waitTimeSlider = new JSlider(500,1000);
-      waitTimeSlider.setPaintLabels(true);
-      waitTimeSlider.setPaintTicks(true);
-      waitTimeSlider.setSnapToTicks(true);
-      waitTimeSlider.setMajorTickSpacing(100);
-      waitTimeSlider.setMinorTickSpacing(100);
-      addSlider(waitTimeSlider, "Wait time (ms)");
+      //---------ADD MIN WAIT TIME SLIDER-----------
+      JSlider minWaitTimeSlider = new JSlider(500,1000,500);
+      minWaitTimeSlider.setPaintLabels(true);
+      minWaitTimeSlider.setPaintTicks(true);
+      minWaitTimeSlider.setSnapToTicks(true);
+      minWaitTimeSlider.setMajorTickSpacing(100);
+      minWaitTimeSlider.setMinorTickSpacing(100);
+      addSlider(minWaitTimeSlider, "Wait time (ms)");
       
      
      //walk length Listener
-      waitTimeSlider.addChangeListener((ChangeEvent event) -> {
-    	  waitTime = waitTimeSlider.getValue();
+      minWaitTimeSlider.addChangeListener((ChangeEvent event) -> {
+    	  minWaitTime = minWaitTimeSlider.getValue();
       });
       
+      //---------ADD MAX WAIT TIME SLIDER-----------
+      JSlider maxWaitTimeSlider = new JSlider(500,1000,500);
+      maxWaitTimeSlider.setPaintLabels(true);
+      maxWaitTimeSlider.setPaintTicks(true);
+      maxWaitTimeSlider.setSnapToTicks(true);
+      maxWaitTimeSlider.setMajorTickSpacing(100);
+      maxWaitTimeSlider.setMinorTickSpacing(100);
+      addSlider(maxWaitTimeSlider, "Wait time (ms)");
+      
+     
+     //walk length Listener
+      maxWaitTimeSlider.addChangeListener((ChangeEvent event) -> {
+    	  maxWaitTime = maxWaitTimeSlider.getValue();
+      });
       //---------ADD MOVE DISTANCE SLIDER-----------
-      JSlider moveDistanceSlider = new JSlider(1, 3);
+      JSlider moveDistanceSlider = new JSlider(1,3,1);
       moveDistanceSlider.setPaintLabels(true);
       moveDistanceSlider.setPaintTicks(true);
       moveDistanceSlider.setSnapToTicks(true);
@@ -195,7 +213,7 @@ class Slider extends JFrame
       });
       
       //---------ADD SAFE DISTANCE SLIDER-----------
-      JSlider safeDistanceSlider = new JSlider(1, 3);
+      JSlider safeDistanceSlider = new JSlider(1, 3,1);
       safeDistanceSlider.setPaintLabels(true);
       safeDistanceSlider.setPaintTicks(true);
       safeDistanceSlider.setSnapToTicks(true);
@@ -209,7 +227,7 @@ class Slider extends JFrame
       });
       
       //---------ADD INFECTION TIME SLIDER-----------
-      JSlider infectionTimeSlider = new JSlider(2, 4);
+      JSlider infectionTimeSlider = new JSlider(2, 4,2);
       infectionTimeSlider.setPaintLabels(true);
       infectionTimeSlider.setPaintTicks(true);
       infectionTimeSlider.setSnapToTicks(true);
