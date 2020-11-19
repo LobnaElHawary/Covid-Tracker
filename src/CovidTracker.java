@@ -1,9 +1,6 @@
 import java.awt.Color;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Random;
-import java.util.Timer;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -68,27 +65,27 @@ public class CovidTracker extends JPanel{
 	}
 	
 	class Threads extends Thread 
-	{ 
+	{
+		Random random = new Random();
+    	int randomX = random.nextInt(xCoord) + 1; //generate random num in range of 1 - xcoord
+    	int randomY = random.nextInt(yCoord) + 1; //generate random num in range of 1 - ycoord
 	    public void run() 
 	    { 
-	    	Random random = new Random();
+	    	
         	int randomSleep = random.nextInt(maxTime + 1 - minTime) + minTime; //generate random num in range
         	
 	        try
 	        { 
-	        	
-	        	int randomX = random.nextInt(xCoord) + 1; //generate random num in range of 1 - xcoord
-	        	int randomY = random.nextInt(yCoord) + 1; //generate random num in range of 1 - ycoord
-	        	System.out.println("random X "+ randomX);  
-	        	System.out.println("random Y "+ randomY);  
-	        	PlaceThread(randomX,randomY); //move thread to random positions
-	        	
-	            // Displaying the thread that is running 
+	        	  // Displaying the thread that is running 
 	            System.out.println ("Thread " + 
 	                  Thread.currentThread().getId() + " with name " 
 	            	+ Thread.currentThread().getName()+
 	                  " is running"); 
 	            
+	        	System.out.println("random X "+ randomX);  
+	        	System.out.println("random Y "+ randomY);  
+	        	PlaceThread(randomX,randomY,Thread.currentThread().getName()); //move thread to random positions
+	        	
 	            Thread.sleep(randomSleep);
 	  
 	        } 
@@ -107,7 +104,7 @@ public class CovidTracker extends JPanel{
 	
 	public void CreateThreads(int nodesNum) {
 		//create nodesNum threads
-        for (int i = 0; i < 1; i++) 
+        for (int i = 0; i < nodesNum; i++) 
         { 
             Threads object = new Threads(); 
             object.setName(Integer.toString(i)); //give each thread a unique name (nums from 0-n)
@@ -117,16 +114,11 @@ public class CovidTracker extends JPanel{
 	
 	
 	
-	public void PlaceThread(int xPosition, int yPosition) {
+	public void PlaceThread(int xPosition, int yPosition,String threadName) {
 		
-		//Place thread in generated position
-		//grid[xPosition][yPosition] = new JLabel(/*Thread.currentThread().getName()*/"T", JLabel.CENTER);
 		grid[xPosition][yPosition].setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
-		grid[xPosition][yPosition].setText("T");
-		
-//		super.update(this.getGraphics());
-//		repaint();
-//		//update table on GUI 
+		grid[xPosition][yPosition].setText(threadName); //update the content 
+		//grid[xPosition][yPosition].setForeground(Color.RED);
 	}
 
 }
