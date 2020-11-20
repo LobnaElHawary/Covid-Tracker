@@ -23,7 +23,6 @@ public class Main extends JFrame{
         this.getContentPane().setPreferredSize(new Dimension(1000, 1000));
         this.pack();
         setTitle("Covid Tracker");
-        //setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         
