@@ -1,5 +1,6 @@
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.util.Arrays;
 import java.util.Random;
 
 import javax.swing.BorderFactory;
@@ -14,25 +15,27 @@ public class CovidTracker extends JPanel{
 	//synchronize 
 
 	private static final long serialVersionUID = 1L;
-	private final int minTime, maxTime,xCoord,yCoord;
+	private final int minTime, maxTime,xCoord,yCoord,nodesNum,moveDistance;
 	JLabel[][] grid;
 	int randomGeneratedX[]; 
 	int randomGeneratedY[];
-	int randomX, randomY;
 	//private  int index = 0;
 	 
-	public CovidTracker(int xCoord, int yCoord,  int nodesNum, int covidPercent, int walkLenght, int minWaitTime, int maxWaitTime,
+	public CovidTracker(int xCoord, int yCoord,  int nodesNum, int covidPercent, int walkLength, int minWaitTime, int maxWaitTime,
 			int moveDistance, int safeDistance, int infectionTime) {
 		
 		this.minTime = minWaitTime;
 		this.maxTime = maxWaitTime;
 		this.xCoord = xCoord;
 		this.yCoord = yCoord;
-		//		System.out.println("Min time "+ minTime);  
+		this.nodesNum = nodesNum;
+		this.moveDistance = moveDistance;
+		
 		randomGeneratedX = new int[nodesNum];
 		randomGeneratedY = new int[nodesNum];
 		
 		InitializeUI(xCoord,yCoord); //create xCoord x yCoord empty board
+		GenerateRandom();
 		CreateThreads(nodesNum);
 		
     }
@@ -75,13 +78,10 @@ public class CovidTracker extends JPanel{
 	
 	class Threads extends Thread 
 	{
-		Random random = new Random();
-    	int randomX = random.nextInt(xCoord) + 1; //generate random num in range of 1 - xcoord
-    	int randomY = random.nextInt(yCoord) + 1; //generate random num in range of 1 - ycoord
 	    public void run() 
 	    { 
-	    	
-        	int randomSleep = random.nextInt(maxTime + 1 - minTime) + minTime; //generate random num in range
+	    	//Random random = new Random();
+        	//int randomSleep = random.nextInt(maxTime + 1 - minTime) + minTime; //generate random num in range
         	
 	        try
 	        { 
@@ -90,23 +90,11 @@ public class CovidTracker extends JPanel{
 	                  Thread.currentThread().getId() + " with name " 
 	            	+ Thread.currentThread().getName()+
 	                  " is running"); 
-	        
+	               	
+	            Thread.sleep(2000);
+	            ReplaceThread();
 	            
-	        	System.out.println("random X "+ randomX);  
-	        	System.out.println("random Y "+ randomY);  
-	        	PlaceThread(randomX,randomY,Thread.currentThread().getName()); //move thread to random positions
-	        	
-	            Thread.sleep(10000);
-	            
-	            Random random = new Random();
-	    		float stepx =random.nextInt(3) - 1; //num from -1 to 0 
-	            float stepy = random.nextInt(3) - 1;//num from -1 to 0
-	            randomX += stepx;
-	            randomY += stepy;
-	            if((randomX <= 30)&&(randomX >= 1)&&(randomY <= 30)&&(randomY >= 1))
-	            	PlaceThread(randomX,randomY,Thread.currentThread().getName());
-	  
-	        } 
+	       } 
 	        catch (InterruptedException e) 
 	        { 
 	            // Throwing an exception 
@@ -120,26 +108,85 @@ public class CovidTracker extends JPanel{
 	    } 
 	}
 	
+	//generates random postions of threads
+	public void GenerateRandom() {
+		Random random = new Random();
+		int randx, randy;
+		boolean exists = false;
+		int arrayindex = 0;
+		//initialize with -1
+		Arrays.fill(randomGeneratedX, -1);
+		Arrays.fill(randomGeneratedY, -1);
+		
+		for(int i = 0; i<nodesNum;i++) {
+			do {
+				randx = random.nextInt(xCoord) + 1; 
+				randy = random.nextInt(yCoord) + 1; 
+				
+				for(int j = 0; j < nodesNum;j++) {
+					if((randomGeneratedX[i] == randx)&&(randomGeneratedY[i] == randy)) 
+						exists = true;
+				}
+			}while(exists);
+			
+			randomGeneratedX[arrayindex]=randx;
+			randomGeneratedY[arrayindex]=randy;
+			arrayindex++;
+		}
+	}
+	
 	public void CreateThreads(int nodesNum) {
 		//create nodesNum threads
-        for (int i = 0; i < 30; i++) 
+        for (int i = 0; i < nodesNum; i++) 
         { 
+        	grid[randomGeneratedX[i]][randomGeneratedY[i]].setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
+        	grid[randomGeneratedX[i]][randomGeneratedY[i]].setText(Integer.toString(i));
             Threads object = new Threads(); 
             object.setName(Integer.toString(i)); //give each thread a unique name (nums from 0-n)
             object.start();
+            
         } 
 	}
 	
-	
-	public synchronized void PlaceThread(int xPosition, int yPosition,String threadName) {
+	public synchronized void ReplaceThread() {
+		
+		boolean collision = false;
+		int posX = 0, posY = 0, randomNum;
+		int Array [] = new int[3]; Array[0] = -moveDistance; Array[1] = 0; Array[2] = moveDistance;
+		
+		
+		//find what position current thread is in
+		for(int i = 1; i < xCoord+1; i++) {
+			for(int j = 1; j < yCoord+1; j++) {
+				if(grid[i][j].getText().equals(Thread.currentThread().getName())){ 
+					posX = i;
+					posY = j;
+				}
+			}
+		}
+		
 		//randomly generate 
-		
-		//check if there will be collision
-		
-		//placethread
-		grid[xPosition][yPosition].setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
-		grid[xPosition][yPosition].setText(threadName); //update the content 
-		//grid[xPosition][yPosition].setForeground(Color.RED);
+		Random random = new Random();
+		float stepx = Array[random.nextInt(3)]; //num from -1 to 1
+        float stepy = Array[random.nextInt(3)];//num from -1 to 1
+        
+        posX += stepx;
+        posY += stepy;
+        
+        if((stepx != 0)||(stepy !=0)) { //if not staying still
+	        //if new position is within bounds, check for collision
+	        if((posX <= xCoord) && (posX >= 1)&&(posY <= yCoord)&&(posY >= 1)) {
+	        	//collision
+		        if(!grid[posX][posY].getText().equals("-"))
+		        	collision = true;
+		       
+		        if(!collision) {
+		        	grid[posX][posY].setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
+		    		grid[posX][posY].setText(Thread.currentThread().getName()); //update the content 
+		    		//grid[xPosition][yPosition].setForeground(Color.RED);
+		        }
+	        }
+      }
 	}
 	    
 
