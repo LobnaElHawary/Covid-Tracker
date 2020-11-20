@@ -100,11 +100,10 @@ public class CovidTracker extends JPanel{
 	        { 
 //	            System.out.println ("Thread " +  Thread.currentThread().getId() + " with name " + Thread.currentThread().getName()+
 //	             " is running"); 
-	        	
 	    		while (System.currentTimeMillis() < end)
 	    		{
 					new Thread(() -> {
-						//check around you
+						//check the 8 coords 
 						//if it's COVID +ive, we want to decrement the amount of time they spent together
                         //this is done by keeping track which thread was in contact with which COVID +ive thread
                         
@@ -200,18 +199,6 @@ public class CovidTracker extends JPanel{
 		oldPosX = posX, oldPosY = posY;
 
 		int Array [] = new int[3]; Array[0] = -moveDistance; Array[1] = 0; Array[2] = moveDistance;
-
-		/*find what position current thread is in
-		for(int i = 1; i < xCoord + 1; i++) {
-			for(int j = 1; j < yCoord + 1; j++) {
-				if(grid[i][j].getText().equals(Thread.currentThread().getName())){ 
-					posX = i;
-					posY = j;
-					oldPosX = i;
-					oldPosY = j;
-				}
-			}
-		} */
 		
 		//randomly generate 
 		Random random = new Random();
@@ -230,17 +217,18 @@ public class CovidTracker extends JPanel{
 		       
 		        if(!collision) {
 		    		grid[posX][posY].setText(Thread.currentThread().getName()); //update the content 
-		    		grid[oldPosX][oldPosY].setText("-"); //remove thread from prev position on GUI
+		    		grid[oldPosX][oldPosY].setText("-"); 		//remove thread from prev position on GUI
 					grid[oldPosX][oldPosY].setForeground(Color.BLACK);
 					
 					//update the currentThread array
-					currentThreadX[Integer.valueOf(Thread.currentThread().getName())] = Integer.toString(posX);
-					currentThreadY[Integer.valueOf(Thread.currentThread().getName())] = Integer.toString(posY);
+					currentThreadX[Integer.valueOf(Thread.currentThread().getName())] = (posX);
+					currentThreadY[Integer.valueOf(Thread.currentThread().getName())] = (posY);
 					
 		    		if(covidStatus[Integer.valueOf(Thread.currentThread().getName())])
 		    			grid[posX][posY].setForeground(Color.RED);
 		    		else
-		    			grid[posX][posY].setForeground(Color.BLUE);
+						grid[posX][posY].setForeground(Color.BLUE);
+						
 		        }
 	        }
       }
