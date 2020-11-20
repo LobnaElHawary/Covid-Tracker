@@ -17,15 +17,19 @@ public class CovidTracker extends JPanel{
 	int randomGeneratedX[]; 
 	int randomGeneratedY[];
 	boolean covidStatus[]; 
+	long start = System.currentTimeMillis();
+	long end; 
 	 
 	public CovidTracker(int xCoord, int yCoord,  int nodesNum, int covidPercent, int walkLength, int minWaitTime, int maxWaitTime,
 			int moveDistance, int safeDistance, int infectionTime) {
+		
 		
 		this.xCoord = xCoord;
 		this.yCoord = yCoord;
 		this.minTime = minWaitTime;
 		this.maxTime = maxWaitTime;
 		this.moveDistance = moveDistance;
+		end = start + walkLength * 1000;
 		
 		randomGeneratedX = new int[nodesNum];
 		randomGeneratedY = new int[nodesNum];
@@ -66,8 +70,6 @@ public class CovidTracker extends JPanel{
         			grid[i][j].setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
                     add(grid[i][j]);
         		}
-////        		 if(i == 15 && j ==15)
-////        			 grid[i][j].setBackground(Color.RED);
         	}
         }
         
@@ -78,20 +80,23 @@ public class CovidTracker extends JPanel{
 	{
 	    public void run() 
 	    { 
-	    	//Random random = new Random();
-        	//int randomSleep = random.nextInt(maxTime + 1 - minTime) + minTime; //generate random num in range
+	    	Random random = new Random();
+        	int randomSleep = random.nextInt(maxTime + 1 - minTime) + minTime; //generate random num in range
         	
 	        try
 	        { 
 	        	  // Displaying the thread that is running 
-	            System.out.println ("Thread " + 
-	                  Thread.currentThread().getId() + " with name " 
-	            	+ Thread.currentThread().getName()+
-	                  " is running"); 
-	               	
-	            Thread.sleep(3000);
-	            ReplaceThread();
-	            
+//	            System.out.println ("Thread " + 
+//	                  Thread.currentThread().getId() + " with name " 
+//	            	+ Thread.currentThread().getName()+
+//	                  " is running"); 
+	        	
+	    		while (System.currentTimeMillis() < end)
+	    		{
+	    			Thread.sleep(randomSleep);
+		            MoveThread();
+	    		}
+ 
 	       } 
 	        catch (InterruptedException e) 
 	        { 
@@ -152,8 +157,12 @@ public class CovidTracker extends JPanel{
         { 
         	grid[randomGeneratedX[i]][randomGeneratedY[i]].setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
         	grid[randomGeneratedX[i]][randomGeneratedY[i]].setText(Integer.toString(i));
+        	
         	if(covidStatus[i]) //if has covid
         		grid[randomGeneratedX[i]][randomGeneratedY[i]].setForeground(Color.RED);
+        	else
+        		grid[randomGeneratedX[i]][randomGeneratedY[i]].setForeground(Color.BLUE);
+        	
             Threads object = new Threads(); 
             object.setName(Integer.toString(i)); //give each thread a unique name (nums from 0-n)
             object.start();
@@ -161,12 +170,11 @@ public class CovidTracker extends JPanel{
         } 
 	}
 	
-	public synchronized void ReplaceThread() {
+	public synchronized void MoveThread() {
 		
 		boolean collision = false;
-		int posX = 0, posY = 0;
+		int posX = 0, posY = 0, oldPosX = 0, oldPosY = 0;
 		int Array [] = new int[3]; Array[0] = -moveDistance; Array[1] = 0; Array[2] = moveDistance;
-		
 		
 		//find what position current thread is in
 		for(int i = 1; i < xCoord+1; i++) {
@@ -174,9 +182,12 @@ public class CovidTracker extends JPanel{
 				if(grid[i][j].getText().equals(Thread.currentThread().getName())){ 
 					posX = i;
 					posY = j;
+					oldPosX = i;
+					oldPosY = j;
 				}
 			}
 		}
+		
 		//randomly generate 
 		Random random = new Random();
 		float stepx = Array[random.nextInt(3)]; //num from -1 to 1
@@ -193,14 +204,18 @@ public class CovidTracker extends JPanel{
 		        	collision = true;
 		       
 		        if(!collision) {
-		        	grid[posX][posY].setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
 		    		grid[posX][posY].setText(Thread.currentThread().getName()); //update the content 
+		    		grid[oldPosX][oldPosY].setText("-"); //remove thread from prev position on GUI
+		    		grid[oldPosX][oldPosY].setForeground(Color.BLACK);
+		    		
 		    		if(covidStatus[Integer.valueOf(Thread.currentThread().getName())])
 		    			grid[posX][posY].setForeground(Color.RED);
+		    		else
+		    			grid[posX][posY].setForeground(Color.BLUE);
 		        }
 	        }
       }
 	}
-	    
+  
 
 }
