@@ -176,7 +176,7 @@ class Slider extends JFrame
       minWaitTimeSlider.setSnapToTicks(true);
       minWaitTimeSlider.setMajorTickSpacing(100);
       minWaitTimeSlider.setMinorTickSpacing(100);
-      addSlider(minWaitTimeSlider, "Wait time (ms)");
+      addSlider(minWaitTimeSlider, "Min wait time (ms)");
       
      
      //walk length Listener
@@ -191,7 +191,7 @@ class Slider extends JFrame
       maxWaitTimeSlider.setSnapToTicks(true);
       maxWaitTimeSlider.setMajorTickSpacing(100);
       maxWaitTimeSlider.setMinorTickSpacing(100);
-      addSlider(maxWaitTimeSlider, "Wait time (ms)");
+      addSlider(maxWaitTimeSlider, "Max wait time (ms)");
       
      
      //walk length Listener
