@@ -1,5 +1,4 @@
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -14,10 +13,10 @@ import javax.swing.event.ChangeListener;
 
 public class SliderWindow
 {
-	public int xCoordinate;
-	public int yCoordinate;
-	public int numNodes;
-	public int covidPercent;
+	public int xCoordinate = 0;
+	public int yCoordinate = 0;
+	public int numNodes = 0;
+	public int covidPercent = 0;
 	public int walkLength = 0;
 	public int minWaitTime = 0; 
 	public int maxWaitTime = 0; 
@@ -36,7 +35,6 @@ public class SliderWindow
                 
                 button.setVisible(true);
                 button.setText("Set Parameters");
-                button.setBackground(Color.RED);
                 frame.add(button, BorderLayout.SOUTH);
              
                 button.addActionListener(new ActionListener() {
@@ -95,12 +93,12 @@ class Slider extends JFrame
 
       //---------ADD X COORDINATE SLIDER-----------
       
-      JSlider xCoordSlider = new JSlider(30,50,30);
+      JSlider xCoordSlider = new JSlider(10,30,30);
       xCoordSlider.setPaintTicks(true);
       xCoordSlider.setPaintLabels(true);
       xCoordSlider.setSnapToTicks(true);
       xCoordSlider.setMajorTickSpacing(10);
-      xCoordSlider.setMinorTickSpacing(10);
+      xCoordSlider.setMinorTickSpacing(1);
       addSlider(xCoordSlider, "X Coordinate size");
       
       //xCoord Listener
@@ -110,12 +108,12 @@ class Slider extends JFrame
       
     //---------ADD Y COORDINATE SLIDER-----------
       
-      JSlider yCoordSlider = new JSlider(30,50,30);
+      JSlider yCoordSlider = new JSlider(10,30,30);
       yCoordSlider.setPaintTicks(true);
       yCoordSlider.setPaintLabels(true);
       yCoordSlider.setSnapToTicks(true);
       yCoordSlider.setMajorTickSpacing(10);
-      yCoordSlider.setMinorTickSpacing(10);
+      yCoordSlider.setMinorTickSpacing(1);
       addSlider(yCoordSlider, "Y Coordinate size");
       
       //yCoord Listener
@@ -125,12 +123,12 @@ class Slider extends JFrame
       
       //---------ADD NUM NODES SLIDER-----------
       
-      JSlider numNodesSlider = new JSlider(30,50,30);
+      JSlider numNodesSlider = new JSlider(10,30,30);
       numNodesSlider.setPaintTicks(true);
       numNodesSlider.setPaintLabels(true);
       numNodesSlider.setSnapToTicks(true);
       numNodesSlider.setMajorTickSpacing(10);
-      numNodesSlider.setMinorTickSpacing(10);
+      numNodesSlider.setMinorTickSpacing(1);
       addSlider(numNodesSlider, "Number of Nodes");
       
      
@@ -141,11 +139,11 @@ class Slider extends JFrame
       
       //---------ADD COVID PERCENT SLIDER-----------
 
-  	  JSlider covidPercentSlider = new JSlider(10,100,10); //values from 10 - 100
+  	  JSlider covidPercentSlider = new JSlider(10,90,10); //values from 10 - 100
       covidPercentSlider.setPaintTicks(true);
       covidPercentSlider.setPaintLabels(true);
       covidPercentSlider.setSnapToTicks(true);
-      covidPercentSlider.setMajorTickSpacing(20);
+      covidPercentSlider.setMajorTickSpacing(10);
       covidPercentSlider.setMinorTickSpacing(10);
       addSlider(covidPercentSlider, "Covid Percentage");
       

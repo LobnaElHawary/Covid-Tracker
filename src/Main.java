@@ -17,18 +17,12 @@ public class Main extends JFrame{
         add(new CovidTracker(slide.xCoordinate,slide.yCoordinate,slide.numNodes,slide.covidPercent,slide.walkLength,
         		slide.minWaitTime,slide.maxWaitTime,slide.moveDistance,slide.safeDistance,slide.infectionTime));
 
-    	
         setResizable(true);
-        pack();
-//        setExtendedState(JFrame.MAXIMIZED_BOTH); 
-//        setUndecorated(true);
-//        setVisible(true);
-        this.getContentPane().setPreferredSize(new Dimension(1400, 1400));
+        this.getContentPane().setPreferredSize(new Dimension(1700, 850));
         this.pack();
         setTitle("Covid Tracker");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
-        
+ 
     }
     public static void main(String[] args) {
         slide = new SliderWindow();
