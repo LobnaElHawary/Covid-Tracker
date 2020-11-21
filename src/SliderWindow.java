@@ -10,6 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 public class SliderWindow
 {
@@ -169,8 +170,22 @@ class Slider extends JFrame
     	  walkLength = walkLengthSlider.getValue();
       });
       
-      //---------ADD MIN WAIT TIME SLIDER-----------
+      //---------ADD MAX WAIT TIME SLIDER-----------
       JSlider minWaitTimeSlider = new JSlider(500,1000,500);
+      JSlider maxWaitTimeSlider = new JSlider(500,1000,500);
+      maxWaitTimeSlider.setPaintLabels(true);
+      maxWaitTimeSlider.setPaintTicks(true);
+      maxWaitTimeSlider.setSnapToTicks(true);
+      maxWaitTimeSlider.setMajorTickSpacing(100);
+      maxWaitTimeSlider.setMinorTickSpacing(100);
+      addSlider(maxWaitTimeSlider, "Max wait time (ms)");
+      
+      maxWaitTimeSlider.addChangeListener(new ChangeListener() {
+    	  public void stateChanged(ChangeEvent e) {
+    		  minWaitTimeSlider.setMaximum(maxWaitTimeSlider.getValue());
+    	  }
+    	});
+      //---------ADD MIN WAIT TIME SLIDER-----------
       minWaitTimeSlider.setPaintLabels(true);
       minWaitTimeSlider.setPaintTicks(true);
       minWaitTimeSlider.setSnapToTicks(true);
@@ -184,16 +199,7 @@ class Slider extends JFrame
     	  minWaitTime = minWaitTimeSlider.getValue();
       });
       
-      //---------ADD MAX WAIT TIME SLIDER-----------
-      JSlider maxWaitTimeSlider = new JSlider(500,1000,500);
-      maxWaitTimeSlider.setPaintLabels(true);
-      maxWaitTimeSlider.setPaintTicks(true);
-      maxWaitTimeSlider.setSnapToTicks(true);
-      maxWaitTimeSlider.setMajorTickSpacing(100);
-      maxWaitTimeSlider.setMinorTickSpacing(100);
-      addSlider(maxWaitTimeSlider, "Max wait time (ms)");
       
-     
      //walk length Listener
       maxWaitTimeSlider.addChangeListener((ChangeEvent event) -> {
     	  maxWaitTime = maxWaitTimeSlider.getValue();

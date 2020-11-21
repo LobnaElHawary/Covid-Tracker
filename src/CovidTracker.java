@@ -9,6 +9,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
 
+import java.util.concurrent.*;
+
 public class CovidTracker extends JPanel{
 
 	private static final long serialVersionUID = 1L;
@@ -18,6 +20,8 @@ public class CovidTracker extends JPanel{
 	int randomGeneratedY[];
 	int currentThreadX[]; 
 	int currentThreadY[];
+	float threadsInfectionTimes[];
+	int infectedThreads[];
 	boolean covidStatus[]; 
 	long start = System.currentTimeMillis();
 	long end; 
@@ -32,13 +36,19 @@ public class CovidTracker extends JPanel{
 		this.maxTime = maxWaitTime;
 		this.moveDistance = moveDistance;
 		this.safeDistance = safeDistance;
+
 		end = start + walkLength * 1000; 
 		
 		randomGeneratedX = new int[nodesNum];
         randomGeneratedY = new int[nodesNum];
         currentThreadX = new int[nodesNum];
         currentThreadY = new int[nodesNum];
-        covidStatus = new boolean[nodesNum];
+		covidStatus = new boolean[nodesNum];
+		threadsInfectionTimes = new float[nodesNum];
+		infectedThreads = new int[nodesNum];
+
+		for (int i = 0; i < nodesNum; i++)
+			threadsInfectionTimes[i] = (float)infectionTime;
 
 		InitializeUI(xCoord,yCoord); //create xCoord x yCoord empty board
 		GenerateRandom(nodesNum); //generate random x and y coords for threads
@@ -102,16 +112,99 @@ public class CovidTracker extends JPanel{
 //	             " is running"); 
 	    		while (System.currentTimeMillis() < end)
 	    		{
-					new Thread(() -> {
-						//check the 8 coords 
-						//if it's COVID +ive, we want to decrement the amount of time they spent together
-                        //this is done by keeping track which thread was in contact with which COVID +ive thread
-                        
-                        //check where running thread is on board
-                        
-					}).start();
+					ExecutorService lookAround = Executors.newSingleThreadExecutor();
+					lookAround.execute(new Runnable() {
+						@Override
+						public void run() {
+							int currentThreadInt = Integer.valueOf(Thread.currentThread().getName());
+							int posX = currentThreadX[currentThreadInt];
+							int posY = currentThreadY[currentThreadInt];
+							long startTime = 0;
+							long endTime;
+							for (int i = 1; i <= safeDistance; i++) {
+
+								//if the grid is occupied aka it doesn't have a - to mean it's empty...
+								//gotta also see COVID status of them, don't forget to add
+								if (!grid[posX][posY+i].getText().equals("-") && grid[posX][posY].getForeground().equals(Color.RED)) {
+									if (startTime == 0)
+										startTime = System.currentTimeMillis();
+									else 
+										;	
+								}
+
+								else if (!grid[posX+i][posY+i].getText().equals("-") && grid[posX][posY].getForeground().equals(Color.RED)){
+									if (startTime == 0)
+										startTime = System.currentTimeMillis();
+									else 
+										;	
+								}
+								
+								else if (!grid[posX+i][posY].getText().equals("-") && grid[posX][posY].getForeground().equals(Color.RED)){
+									if (startTime == 0)
+										startTime = System.currentTimeMillis();
+									else 
+										;	
+								}
+								
+								else if (!grid[posX+i][posY-i].getText().equals("-") && grid[posX][posY].getForeground().equals(Color.RED)){
+									if (startTime == 0)
+										startTime = System.currentTimeMillis();
+									else 
+										;	
+								}
+								
+								else if (!grid[posX][posY-i].getText().equals("-") && grid[posX][posY].getForeground().equals(Color.RED)){
+									if (startTime == 0)
+										startTime = System.currentTimeMillis();
+									else 
+										;	
+								}
+
+								else if (!grid[posX-i][posY-i].getText().equals("-") && grid[posX][posY].getForeground().equals(Color.RED)){
+									if (startTime == 0)
+										startTime = System.currentTimeMillis();
+									else 
+										;	
+								}
+
+								else if (!grid[posX-i][posY].getText().equals("-") && grid[posX][posY].getForeground().equals(Color.RED)){
+									if (startTime == 0)
+										startTime = System.currentTimeMillis();
+									else 
+										;	
+								}
+
+								else if (!grid[posX-i][posY+i].getText().equals("-") && grid[posX][posY].getForeground().equals(Color.RED)){
+									if (startTime == 0)
+										startTime = System.currentTimeMillis();
+									else 
+										;					
+								}
+								
+								//if everything around the current thread is empty or not COVID affected
+								else {
+									//then we check to see if there was previously something around the thread with COVID
+									//to note its end time, to get how much time they spent next to one another
+									if (startTime != 0) {
+										endTime = System.currentTimeMillis();
+										threadsInfectionTimes[currentThreadInt]-= ((endTime - startTime) / (float)1000.0);
+										startTime = 0;
+									}
+
+									else
+										;
+								}
+								
+								if (threadsInfectionTimes[currentThreadInt] <= 0) {
+
+								}
+
+							}
+						}
+					});
 					
-	    			Thread.sleep(randomSleep);
+					Thread.sleep(randomSleep);
+					lookAround.shutdown();
 					MoveThread();
 	    		}
  
