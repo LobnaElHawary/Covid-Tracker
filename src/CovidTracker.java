@@ -22,13 +22,13 @@ public class CovidTracker extends JPanel{
 	int currentThreadY[];
 	float threadsInfectionTimes[];
 	int infectedThreads[];
-	boolean covidStatus[]; 
+	int infectedThreadCounter;
+	int covidStatus[]; //0: dont have covid, 1: have covid, 2: infected
 	long start = System.currentTimeMillis();
 	long end; 
 	 
 	public CovidTracker(int xCoord, int yCoord,  int nodesNum, int covidPercent, int walkLength, int minWaitTime, int maxWaitTime,
 			int moveDistance, int safeDistance, int infectionTime) {
-		
 		
 		this.xCoord = xCoord;
 		this.yCoord = yCoord;
@@ -43,9 +43,10 @@ public class CovidTracker extends JPanel{
         randomGeneratedY = new int[nodesNum];
         currentThreadX = new int[nodesNum];
         currentThreadY = new int[nodesNum];
-		covidStatus = new boolean[nodesNum];
+		covidStatus = new int[nodesNum];
 		threadsInfectionTimes = new float[nodesNum];
 		infectedThreads = new int[nodesNum];
+		infectedThreadCounter = 0;
 
 		for (int i = 0; i < nodesNum; i++)
 			threadsInfectionTimes[i] = (float)infectionTime;
@@ -62,11 +63,11 @@ public class CovidTracker extends JPanel{
 		int xnum = 0;
 		int ynum = 1;
 	
-		setLayout(new GridLayout(xCoord+1 /*num rows*/, yCoord+1/*num cols*/)); 
-	    grid = new JLabel[xCoord+1][yCoord+1];
+		setLayout(new GridLayout(yCoord+1 /*num rows*/, xCoord+1/*num cols*/)); 
+	    grid = new JLabel[yCoord+1][xCoord+1];
 	    
-        for(int i = 0; i < xCoord+1; i++) {
-        	for(int j = 0; j < yCoord+1; j++) {
+        for(int i = 0; i < yCoord+1; i++) {
+        	for(int j = 0; j < xCoord+1; j++) {
         		
         		if(i == 0) {
         			grid[i][j] = new JLabel(Integer.toString(xnum), JLabel.CENTER);
@@ -109,69 +110,85 @@ public class CovidTracker extends JPanel{
 //	             " is running"); 
 	    		while (System.currentTimeMillis() < end)
 	    		{
+					int currentThreadInt = Integer.valueOf(Thread.currentThread().getName());
 					ExecutorService lookAround = Executors.newSingleThreadExecutor();
 					lookAround.execute(new Runnable() {
 						@Override
 						public void run() {
-							int currentThreadInt = Integer.valueOf(Thread.currentThread().getName());
 							int posX = currentThreadX[currentThreadInt];
 							int posY = currentThreadY[currentThreadInt];
 							long startTime = 0;
 							long endTime;
+							while (true) {
 							for (int i = 1; i <= safeDistance; i++) {
 
 								//if the grid is occupied aka it doesn't have a - to mean it's empty...
-								//gotta also see COVID status of them, don't forget to add
-								if (!grid[posX][posY+i].getText().equals("-") && grid[posX][posY].getForeground().equals(Color.RED)) {
+								//directly above
+								if (posY-i >= 1 && 
+									!grid[posY-i][posX].getText().equals("-") && grid[posY-i][posX].getForeground().equals(Color.RED)) {
 									if (startTime == 0)
 										startTime = System.currentTimeMillis();
 									else 
 										;	
 								}
 
-								else if (!grid[posX+i][posY+i].getText().equals("-") && grid[posX][posY].getForeground().equals(Color.RED)){
+								//above-right
+								else if (posY-i >= 1 && posX+i <= xCoord &&
+									!grid[posY-i][posX+i].getText().equals("-") && grid[posY-i][posX+i].getForeground().equals(Color.RED)){
 									if (startTime == 0)
 										startTime = System.currentTimeMillis();
 									else 
 										;	
 								}
 								
-								else if (!grid[posX+i][posY].getText().equals("-") && grid[posX][posY].getForeground().equals(Color.RED)){
+								//right
+								else if (posX+i <= xCoord &&
+									!grid[posY][posX+i].getText().equals("-") && grid[posY][posX+i].getForeground().equals(Color.RED)){
 									if (startTime == 0)
 										startTime = System.currentTimeMillis();
 									else 
 										;	
 								}
 								
-								else if (!grid[posX+i][posY-i].getText().equals("-") && grid[posX][posY].getForeground().equals(Color.RED)){
+								//below-right
+								else if (posY+i <= yCoord && posX+i <= xCoord &&
+									!grid[posY+i][posX-i].getText().equals("-") && grid[posY+i][posX+i].getForeground().equals(Color.RED)){
 									if (startTime == 0)
 										startTime = System.currentTimeMillis();
 									else 
 										;	
 								}
 								
-								else if (!grid[posX][posY-i].getText().equals("-") && grid[posX][posY].getForeground().equals(Color.RED)){
+								//below
+								else if (posY+i <= yCoord &&
+									!grid[posY+i][posX].getText().equals("-") && grid[posY+i][posX].getForeground().equals(Color.RED)){
 									if (startTime == 0)
 										startTime = System.currentTimeMillis();
 									else 
 										;	
 								}
 
-								else if (!grid[posX-i][posY-i].getText().equals("-") && grid[posX][posY].getForeground().equals(Color.RED)){
+								//below-left
+								else if (posY+i <= yCoord && posX-i >= 1 &&
+									!grid[posY+i][posX-i].getText().equals("-") && grid[posY+i][posX-i].getForeground().equals(Color.RED)){
 									if (startTime == 0)
 										startTime = System.currentTimeMillis();
 									else 
 										;	
 								}
 
-								else if (!grid[posX-i][posY].getText().equals("-") && grid[posX][posY].getForeground().equals(Color.RED)){
+								//left
+								else if (posX-i >= 1 &&
+									!grid[posY][posX-i].getText().equals("-") && grid[posY][posX-i].getForeground().equals(Color.RED)){
 									if (startTime == 0)
 										startTime = System.currentTimeMillis();
 									else 
 										;	
 								}
 
-								else if (!grid[posX-i][posY+i].getText().equals("-") && grid[posX][posY].getForeground().equals(Color.RED)){
+								//top-left
+								else if (posY-i >= 1 && posX-i >= 1 &&
+									!grid[posY-i][posX-i].getText().equals("-") && grid[posY-i][posX-i].getForeground().equals(Color.RED)){
 									if (startTime == 0)
 										startTime = System.currentTimeMillis();
 									else 
@@ -192,12 +209,18 @@ public class CovidTracker extends JPanel{
 										;
 								}
 								
+								//if the thread has been around COVID for too long
 								if (threadsInfectionTimes[currentThreadInt] <= 0) {
-									
+									covidStatus[currentThreadInt] = 2;  	//2 is infected
+									infectedThreads[infectedThreadCounter] = currentThreadInt;
 								}
+
+								else
+									;
 
 							}
 						}
+					}
 					});
 					
 					Thread.sleep(randomSleep);
@@ -254,10 +277,10 @@ public class CovidTracker extends JPanel{
 		int haveCovid = (int) Math.round(nodesNum * (covidPercent/(double)100));
 		
 		for(int i = 0; i < nodesNum - haveCovid; i++) {
-			covidStatus[i] = false;
+			covidStatus[i] = 0;
 		}
 		for(int i = nodesNum - haveCovid; i < nodesNum; i++) {
-			covidStatus[i] = true;
+			covidStatus[i] = 1;
 		}
 		Collections.shuffle(Arrays.asList(covidStatus)); //shuffle array randomly
 	}
@@ -266,12 +289,12 @@ public class CovidTracker extends JPanel{
 		//create nodesNum threads
         for (int i = 0; i < nodesNum; i++) 
         { 
-        	grid[randomGeneratedX[i]][randomGeneratedY[i]].setText(Integer.toString(i));
+        	grid[randomGeneratedY[i]][randomGeneratedX[i]].setText(Integer.toString(i));
         	
-        	if(covidStatus[i]) //if has covid
-        		grid[randomGeneratedX[i]][randomGeneratedY[i]].setForeground(Color.RED);
+        	if(covidStatus[i] == 1) //if has covid
+        		grid[randomGeneratedY[i]][randomGeneratedX[i]].setForeground(Color.RED);
         	else
-        		grid[randomGeneratedX[i]][randomGeneratedY[i]].setForeground(Color.BLUE);
+        		grid[randomGeneratedY[i]][randomGeneratedX[i]].setForeground(Color.BLUE);
         	
             Threads object = new Threads(); 
             object.setName(Integer.toString(i)); //give each thread a unique name (nums from 0-n)
@@ -302,22 +325,26 @@ public class CovidTracker extends JPanel{
 	        //if new position is within bounds, check for collision
 	        if((posX <= xCoord) && (posX >= 1)&&(posY <= yCoord)&&(posY >= 1)) {
 	        	//collision
-		        if(!grid[posX][posY].getText().equals("-"))
+		        if(!grid[posY][posX].getText().equals("-"))
 		        	collision = true;
 		       
 		        if(!collision) {
-		    		grid[posX][posY].setText(Thread.currentThread().getName()); //update the content 
-		    		grid[oldPosX][oldPosY].setText("-"); 		//remove thread from prev position on GUI
-					grid[oldPosX][oldPosY].setForeground(Color.BLACK);
+		    		grid[posY][posX].setText(Thread.currentThread().getName()); //update the content 
+		    		grid[oldPosY][oldPosX].setText("-"); 		//remove thread from prev position on GUI
+					grid[oldPosY][oldPosX].setForeground(Color.BLACK);
 					
 					//update the currentThread array
 					currentThreadX[Integer.valueOf(Thread.currentThread().getName())] = (posX);
 					currentThreadY[Integer.valueOf(Thread.currentThread().getName())] = (posY);
 					
-		    		if(covidStatus[Integer.valueOf(Thread.currentThread().getName())])
-		    			grid[posX][posY].setForeground(Color.RED);
+		    		if(covidStatus[Integer.valueOf(Thread.currentThread().getName())] == 1)
+						grid[posY][posX].setForeground(Color.RED);
+						
+					else if(covidStatus[Integer.valueOf(Thread.currentThread().getName())] == 2)
+						grid[posY][posX].setForeground(Color.ORANGE);	
+						
 		    		else
-						grid[posX][posY].setForeground(Color.BLUE);
+						grid[posY][posX].setForeground(Color.BLUE);
 						
 		        }
 	        }

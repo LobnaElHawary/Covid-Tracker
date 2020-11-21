@@ -20,7 +20,10 @@ public class Main extends JFrame{
     	
         setResizable(true);
         pack();
-        this.getContentPane().setPreferredSize(new Dimension(1000, 1000));
+//        setExtendedState(JFrame.MAXIMIZED_BOTH); 
+//        setUndecorated(true);
+//        setVisible(true);
+        this.getContentPane().setPreferredSize(new Dimension(1400, 1400));
         this.pack();
         setTitle("Covid Tracker");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

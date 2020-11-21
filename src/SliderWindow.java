@@ -233,7 +233,7 @@ class Slider extends JFrame
       });
       
       //---------ADD INFECTION TIME SLIDER-----------
-      JSlider infectionTimeSlider = new JSlider(2, 4,2);
+      JSlider infectionTimeSlider = new JSlider(1, 4, 2);
       infectionTimeSlider.setPaintLabels(true);
       infectionTimeSlider.setPaintTicks(true);
       infectionTimeSlider.setSnapToTicks(true);
