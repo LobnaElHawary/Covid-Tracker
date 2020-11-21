@@ -100,9 +100,6 @@ public class CovidTracker extends JPanel{
             if(maxTime > minTime)
 				randomSleep = random.nextInt(maxTime + 1 - minTime) + minTime; //generate random num in range
 
-			else if (minTime > maxTime)	//assuming they made a mistake, we switch mix with min
-				randomSleep = random.nextInt(minTime + 1 - maxTime) + maxTime; //generate random num in range
-
             else //maxTime = minTime
                 randomSleep = maxTime;
         	
@@ -196,7 +193,7 @@ public class CovidTracker extends JPanel{
 								}
 								
 								if (threadsInfectionTimes[currentThreadInt] <= 0) {
-
+									
 								}
 
 							}
