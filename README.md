@@ -1,4 +1,20 @@
-# Covid-Tracker
+# Done by
+
+Lobna ElHawary 900160270
+Samer Basta    900150910
+
+# Covid-Tracker Assumptions
+
+- We assumed that the distance between a grid and another, is 1m.
+- We're assuming that the equivalent of 1 COVID patient spreading their virus to 1 person for 3 seconds is that 3 COVID patients spreading their virus to 1 person for 1 second. With that in mind, our implementation includes that each normal person has a general COVID timer counter, that goes down every time they get into contact with anyone generally with COVID. 
+
+# Covid-Tracker Guidlines
+
+- We made 30 nodes, the default, as the max because anything above 30 requires a lot more processing power, and slows down the program. We added a video showing 30 nodes moving in a 30 x 30 grid to quickly show that the program indeed works correctly.
+- We have the max first and then the min in the slider, with it being programmed that when the max is selected, it changes the min slider's max value into that same value.
+- Each thread has its own listener executor thread that listens to each node's surroundings and it keeps track of how long the node was in contact with COVID for, and deducts it from the allowed time before they're flagged. Once this value is 0 or below, they are flagged and their color is turned orange
+
+# Assignemnt description
 Java Assignment 4
 
 The figure illustrates people moving in a space of 30x30 meters. The people, represented by the
