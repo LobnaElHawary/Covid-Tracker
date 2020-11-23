@@ -14,7 +14,7 @@ Samer Basta    900150910
 - We have the max first and then the min in the slider, with it being programmed that when the max is selected, it changes the min slider's max value into that same value.
 - Each thread has its own listener executor thread that listens to each node's surroundings and it keeps track of how long the node was in contact with COVID for, and deducts it from the allowed time before they're flagged. Once this value is 0 or below, they are flagged and their color is turned orange
 
-# Assignemnt description
+# Assignment description
 Java Assignment 4
 
 The figure illustrates people moving in a space of 30x30 meters. The people, represented by the
